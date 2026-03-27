@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>facilguide - Python Package for Facil.guide Tech Guides</title>
+    <meta name="description" content="Python package to access Facil.guide's catalog of simplified tech guides for seniors. 15 guides, 8 categories, 5 languages. Free and open source.">
+    <link rel="canonical" href="https://arnaudleroy-studio.github.io/facilguide-python/">
+    <style>
+        :root {
+            --color-bg: #fdfcfa;
+            --color-surface: #ffffff;
+            --color-text: #2d2a26;
+            --color-text-soft: #5c574f;
+            --color-accent: #3a7d5e;
+            --color-accent-light: #e8f4ee;
+            --color-border: #e5e0d8;
+            --color-code-bg: #f5f2ed;
+            --color-code-text: #2d2a26;
+            --color-link: #2e6b4a;
+            --color-link-hover: #1d4a32;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 2px 8px rgba(0,0,0,0.08);
+            --radius: 10px;
+            --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-mono: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", Menlo, Consolas, monospace;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--color-text);
+            background: var(--color-bg);
+            line-height: 1.7;
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Header */
+        .site-header {
+            background: var(--color-accent);
+            color: #fff;
+            padding: 3rem 1.5rem 2.5rem;
+            text-align: center;
+        }
+
+        .site-header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .site-header .tagline {
+            font-size: 1.15rem;
+            opacity: 0.9;
+            max-width: 560px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.6;
+        }
+
+        .site-header .version-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Navigation links row */
+        .header-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.6rem 1.2rem;
+            margin-top: 1.2rem;
+        }
+
+        .header-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 0.35rem 0.8rem;
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .header-links a:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        /* Main content */
+        .content {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 4rem;
+        }
+
+        h2 {
+            font-size: 1.55rem;
+            font-weight: 700;
+            margin: 2.5rem 0 1rem;
+            color: var(--color-text);
+            letter-spacing: -0.01em;
+        }
+
+        h2:first-of-type {
+            margin-top: 0;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 1.8rem 0 0.6rem;
+            color: var(--color-text);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--color-text-soft);
+        }
+
+        a {
+            color: var(--color-link);
+            text-decoration: underline;
+            text-decoration-color: rgba(46,107,74,0.3);
+            text-underline-offset: 2px;
+            transition: color 0.2s, text-decoration-color 0.2s;
+        }
+
+        a:hover {
+            color: var(--color-link-hover);
+            text-decoration-color: var(--color-link-hover);
+        }
+
+        /* Install box */
+        .install-box {
+            background: var(--color-accent);
+            color: #fff;
+            padding: 1.2rem 1.5rem;
+            border-radius: var(--radius);
+            font-family: var(--font-mono);
+            font-size: 1.05rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .install-box code {
+            color: #fff;
+        }
+
+        .install-box .copy-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: #fff;
+            padding: 0.4rem 0.9rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: var(--font-body);
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .install-box .copy-btn:hover {
+            background: rgba(255,255,255,0.35);
+        }
+
+        /* Code blocks */
+        pre {
+            background: var(--color-code-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 1.2rem 1.4rem;
+            overflow-x: auto;
+            margin: 1rem 0 1.5rem;
+            font-size: 0.92rem;
+            line-height: 1.65;
+        }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.92em;
+            color: var(--color-code-text);
+        }
+
+        p code, li code {
+            background: var(--color-code-bg);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.88em;
+        }
+
+        .comment {
+            color: #7a7568;
+        }
+
+        .string {
+            color: #2e7d5a;
+        }
+
+        .output {
+            color: #7a7568;
+            font-style: italic;
+        }
+
+        /* Cards grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0 1.5rem;
+        }
+
+        .card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 1.1rem 1.2rem;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: #d0cabf;
+        }
+
+        .card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--color-text);
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: var(--color-text-soft);
+            margin-bottom: 0;
+            line-height: 1.5;
+        }
+
+        /* Language list */
+        .lang-list {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin: 1rem 0 1.5rem;
+        }
+
+        .lang-list li a {
+            display: block;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 500;
+            color: var(--color-text);
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .lang-list li a:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+        }
+
+        .lang-list li a span {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--color-text-soft);
+            font-weight: 400;
+            margin-top: 0.15rem;
+        }
+
+        /* Guide table */
+        .guide-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .guide-table th {
+            text-align: left;
+            padding: 0.7rem 0.8rem;
+            border-bottom: 2px solid var(--color-border);
+            color: var(--color-text);
+            font-weight: 600;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .guide-table td {
+            padding: 0.6rem 0.8rem;
+            border-bottom: 1px solid var(--color-border);
+            color: var(--color-text-soft);
+        }
+
+        .guide-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .guide-table tr:hover td {
+            background: var(--color-accent-light);
+        }
+
+        .difficulty-beginner {
+            color: var(--color-accent);
+            font-weight: 500;
+        }
+
+        .difficulty-intermediate {
+            color: #b8860b;
+            font-weight: 500;
+        }
+
+        /* API section */
+        .api-function {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 1.3rem 1.5rem;
+            margin: 1rem 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .api-function h4 {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-accent);
+            margin-bottom: 0.4rem;
+        }
+
+        .api-function p {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .api-function .params {
+            font-size: 0.88rem;
+            color: var(--color-text-soft);
+        }
+
+        .api-function .params strong {
+            color: var(--color-text);
+        }
+
+        /* Section divider */
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--color-border);
+            margin: 2.5rem 0;
+        }
+
+        /* Footer */
+        .site-footer {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            border-top: 1px solid var(--color-border);
+            color: var(--color-text-soft);
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .site-footer a {
+            color: var(--color-link);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .site-header {
+                padding: 2rem 1.2rem 1.8rem;
+            }
+
+            .site-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 1.8rem 1.2rem 3rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .install-box {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .guide-table {
+                font-size: 0.88rem;
+            }
+
+            .guide-table th,
+            .guide-table td {
+                padding: 0.5rem 0.5rem;
+            }
+
+            pre {
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>facilguide</h1>
+    <p class="tagline">A Python package for accessing Facil.guide's catalog of simplified tech guides for seniors.</p>
+    <span class="version-badge">Version 0.1.0</span>
+    <nav class="header-links">
+        <a href="https://facil.guide">Facil.guide</a>
+        <a href="https://pypi.org/project/facilguide/">PyPI</a>
+        <a href="https://github.com/arnaudleroy-studio/facilguide-python">GitHub</a>
+        <a href="#install">Install</a>
+        <a href="#api">API Reference</a>
+    </nav>
+</header>
+
+<main class="content">
+
+    <h2 id="about">What is this?</h2>
+    <p>
+        <a href="https://facil.guide">Facil.guide</a> provides clear, step-by-step tech guides designed for seniors and anyone who prefers simple instructions. Topics cover smartphones, tablets, internet safety, social media, and more.
+    </p>
+    <p>
+        The <code>facilguide</code> Python package gives you access to the full guide catalog directly in your code. It includes 15 guides across 8 categories, available in 5 languages. No API key needed, no internet connection required after install.
+    </p>
+
+    <hr class="section-divider">
+
+    <h2 id="install">Installation</h2>
+    <p>Install from <a href="https://pypi.org/project/facilguide/">PyPI</a> with pip. Requires Python 3.9 or newer. No dependencies.</p>
+
+    <div class="install-box">
+        <code>pip install facilguide</code>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText('pip install facilguide');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)">Copy</button>
+    </div>
+
+    <hr class="section-divider">
+
+    <h2 id="quickstart">Quick Start</h2>
+    <p>After installing, import <code>facil</code> and start exploring the guide catalog.</p>
+
+<pre><code><span class="comment"># Import the package</span>
+<span>import</span> facil
+
+<span class="comment"># See all available guides</span>
+all_guides = facil.guides()
+print(f<span class="string">"{len(all_guides)} guides available"</span>)
+<span class="output"># 15 guides available</span>
+
+<span class="comment"># Get guides in Spanish</span>
+spanish = facil.guides(lang=<span class="string">"es"</span>)
+
+<span class="comment"># Get security-related guides</span>
+security = facil.guides(category=<span class="string">"security"</span>)
+
+<span class="comment"># Search by title</span>
+results = facil.search(<span class="string">"whatsapp"</span>)
+print(results[0][<span class="string">"title"</span>])
+<span class="output"># How to Set Up WhatsApp</span>
+
+<span class="comment"># List all languages</span>
+for lang in facil.languages():
+    print(f<span class="string">"{lang['name']}: {lang['url']}"</span>)
+
+<span class="comment"># List all categories</span>
+for cat in facil.categories():
+    print(f<span class="string">"{cat['name']}: {cat['description']}"</span>)
+</code></pre>
+
+    <hr class="section-divider">
+
+    <h2 id="api">API Reference</h2>
+    <p>The package provides four functions. All data is bundled locally, so these work offline.</p>
+
+    <div class="api-function">
+        <h4>facil.guides(*, lang=None, category=None)</h4>
+        <p>Returns a list of guide dictionaries. You can filter by language, category, or both.</p>
+        <p class="params">
+            <strong>lang</strong> (str, optional): Language code. One of <code>en</code>, <code>es</code>, <code>fr</code>, <code>pt</code>, <code>it</code>.<br>
+            <strong>category</strong> (str, optional): Category slug. See the categories table below.<br>
+            <strong>Returns:</strong> List of dicts, each with <code>slug</code>, <code>title</code>, <code>category</code>, <code>difficulty</code>, and <code>languages</code>.
+        </p>
+    </div>
+
+    <div class="api-function">
+        <h4>facil.categories()</h4>
+        <p>Returns a list of all guide categories.</p>
+        <p class="params">
+            <strong>Returns:</strong> List of dicts, each with <code>slug</code>, <code>name</code>, and <code>description</code>.
+        </p>
+    </div>
+
+    <div class="api-function">
+        <h4>facil.languages()</h4>
+        <p>Returns all supported languages with their Facil.guide URLs.</p>
+        <p class="params">
+            <strong>Returns:</strong> List of dicts, each with <code>code</code>, <code>name</code>, and <code>url</code>.
+        </p>
+    </div>
+
+    <div class="api-function">
+        <h4>facil.search(query, *, lang=None)</h4>
+        <p>Search guides by title. Case-insensitive.</p>
+        <p class="params">
+            <strong>query</strong> (str): The search term.<br>
+            <strong>lang</strong> (str, optional): Limit results to a specific language.<br>
+            <strong>Returns:</strong> List of matching guide dicts.
+        </p>
+    </div>
+
+    <hr class="section-divider">
+
+    <h2 id="categories">Guide Categories</h2>
+    <p>Guides are organized into 8 practical categories that cover the most common tech needs for seniors.</p>
+
+    <div class="card-grid">
+        <div class="card">
+            <h4>Smartphone</h4>
+            <p>Phone setup, apps, and everyday use</p>
+        </div>
+        <div class="card">
+            <h4>Tablet</h4>
+            <p>iPad and Android tablet guides</p>
+        </div>
+        <div class="card">
+            <h4>Computer</h4>
+            <p>Desktop and laptop essentials</p>
+        </div>
+        <div class="card">
+            <h4>Internet</h4>
+            <p>Web browsing, email, and online safety</p>
+        </div>
+        <div class="card">
+            <h4>Social Media</h4>
+            <p>Facebook, WhatsApp, and staying connected</p>
+        </div>
+        <div class="card">
+            <h4>Security</h4>
+            <p>Passwords, scams, and digital safety</p>
+        </div>
+        <div class="card">
+            <h4>Photos and Video</h4>
+            <p>Taking, storing, and sharing photos</p>
+        </div>
+        <div class="card">
+            <h4>Health Apps</h4>
+            <p>Health tracking and telehealth</p>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <h2 id="guides">Included Guides</h2>
+    <p>The package bundles 15 guides. Each guide is available in multiple languages.</p>
+
+    <table class="guide-table">
+        <thead>
+            <tr>
+                <th>Guide</th>
+                <th>Category</th>
+                <th>Difficulty</th>
+                <th>Languages</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>How to Set Up WhatsApp</td>
+                <td>Social Media</td>
+                <td class="difficulty-beginner">Beginner</td>
+                <td>EN, ES, FR, PT, IT</td>
+            </tr>
+            <tr>
+                <td>Video Call Your Family</td>
+                <td>Social Media</td>
+                <td class="difficulty-beginner">Beginner</td>
+                <td>EN, ES, FR, PT, IT</td>
+            </tr>
+            <tr>
+                <td>Create a Strong Password</td>
+                <td>Security</td>
+                <td class="difficulty-beginner">Beginner</td>
+                <td>EN, ES, FR, PT, IT</td>
+            </tr>
+            <tr>
+                <td>How to Spot a Scam Email</td>
+                <td>Security</td>
+                <td class="difficulty-beginner">Beginner</td>
+                <td>EN, ES, FR, PT, IT</td>
+            </tr>
+            <tr>
+                <td>Send Photos to Family</td>
+                <td>Photos and Video</td>
+                <td class="difficulty-beginner">Beginner</td>
+                <td>EN, ES, FR, PT, IT</td>
+            </tr>
+            <tr>
+                <td>Organize Your Photos</td>
+                <td>Photos and Video</td>
+                <td class="difficulty-intermediate">Intermediate</td>
+                <td>EN, ES, FR</td>
+            </tr>
+            <tr>
+                <td>Connect to Wi-Fi</td>
+                <td>Internet</td>
+                <td class="difficulty-beginner">Beginner</td>
+                <td>EN, ES, FR, PT, IT</td>
+            </tr>
+            <tr>
+                <td>Safe Online Banking</td>
+                <td>Security</td>
+                <td class="difficulty-intermediate">Intermediate</td>
+                <td>EN, ES, FR</td>
+            </tr>
+            <tr>
+                <td>Smartphone Basics</td>
+                <td>Smartphone</td>
+                <td class="difficulty-beginner">Beginner</td>
+                <td>EN, ES, FR, PT, IT</td>
+            </tr>
+            <tr>
+                <td>How to Install an App</td>
+                <td>Smartphone</td>
+                <td class="difficulty-beginner">Beginner</td>
+                <td>EN, ES, FR, PT, IT</td>
+            </tr>
+            <tr>
+                <td>Set Up Your New Tablet</td>
+                <td>Tablet</td>
+                <td class="difficulty-beginner">Beginner</td>
+                <td>EN, ES, FR</td>
+            </tr>
+            <tr>
+                <td>Email for Beginners</td>
+                <td>Internet</td>
+                <td class="difficulty-beginner">Beginner</td>
+                <td>EN, ES, FR, PT, IT</td>
+            </tr>
+            <tr>
+                <td>Health Apps Guide</td>
+                <td>Health Apps</td>
+                <td class="difficulty-intermediate">Intermediate</td>
+                <td>EN, ES</td>
+            </tr>
+            <tr>
+                <td>Facebook for Beginners</td>
+                <td>Social Media</td>
+                <td class="difficulty-beginner">Beginner</td>
+                <td>EN, ES, FR, PT</td>
+            </tr>
+            <tr>
+                <td>How to Use Zoom</td>
+                <td>Social Media</td>
+                <td class="difficulty-beginner">Beginner</td>
+                <td>EN, ES, FR, PT, IT</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr class="section-divider">
+
+    <h2 id="languages">Languages</h2>
+    <p>All guides are written in plain, approachable language. Visit Facil.guide in your preferred language:</p>
+
+    <ul class="lang-list">
+        <li><a href="https://facil.guide/en/">English <span>facil.guide/en</span></a></li>
+        <li><a href="https://facil.guide/es/">Espanol <span>facil.guide/es</span></a></li>
+        <li><a href="https://facil.guide/fr/">Francais <span>facil.guide/fr</span></a></li>
+        <li><a href="https://facil.guide/pt/">Portugues <span>facil.guide/pt</span></a></li>
+        <li><a href="https://facil.guide/it/">Italiano <span>facil.guide/it</span></a></li>
+    </ul>
+
+    <hr class="section-divider">
+
+    <h2 id="examples">More Examples</h2>
+
+    <h3>Combine filters</h3>
+<pre><code><span class="comment"># Beginner social media guides in French</span>
+french_social = facil.guides(lang=<span class="string">"fr"</span>, category=<span class="string">"social"</span>)
+for g in french_social:
+    print(g[<span class="string">"title"</span>])
+</code></pre>
+
+    <h3>Count guides per language</h3>
+<pre><code>for lang in facil.languages():
+    count = len(facil.guides(lang=lang[<span class="string">"code"</span>]))
+    print(f<span class="string">"{lang['name']}: {count} guides"</span>)
+
+<span class="output"># English: 15 guides</span>
+<span class="output"># Spanish: 14 guides</span>
+<span class="output"># French: 13 guides</span>
+<span class="output"># Portuguese: 11 guides</span>
+<span class="output"># Italian: 10 guides</span>
+</code></pre>
+
+    <h3>Build a simple guide menu</h3>
+<pre><code>for cat in facil.categories():
+    guides_in_cat = facil.guides(category=cat[<span class="string">"slug"</span>])
+    print(f<span class="string">"\n{cat['name']} ({len(guides_in_cat)} guides)"</span>)
+    for g in guides_in_cat:
+        print(f<span class="string">"  - {g['title']}"</span>)
+</code></pre>
+
+    <hr class="section-divider">
+
+    <h2 id="requirements">Requirements</h2>
+    <p>
+        Python 3.9 or newer. No external dependencies. The guide data is bundled inside the package, so it works completely offline after installation.
+    </p>
+
+    <h2 id="license">License</h2>
+    <p>
+        MIT License. See the <a href="https://github.com/arnaudleroy-studio/facilguide-python">GitHub repository</a> for full details.
+    </p>
+
+</main>
+
+<footer class="site-footer">
+    <p>
+        <strong>facilguide</strong> is the Python package for <a href="https://facil.guide">Facil.guide</a>.
+    </p>
+    <p>
+        <a href="https://pypi.org/project/facilguide/">PyPI</a> |
+        <a href="https://github.com/arnaudleroy-studio/facilguide-python">Source Code</a> |
+        <a href="https://facil.guide">Facil.guide</a>
+    </p>
+</footer>
+
+</body>
+</html>
