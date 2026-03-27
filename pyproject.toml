@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "facilguide"
+version = "0.1.0"
+description = "Simplified tech guides for seniors — clear, step-by-step instructions for smartphones, tablets, apps, and everyday technology."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [
+    {name = "Facil Guide", email = "dropthehq@gmail.com"},
+]
+keywords = ["senior-tech", "tech-guides", "tutorials", "accessibility", "facil", "digital-literacy", "howto"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Education",
+    "Topic :: Software Development :: Documentation",
+    "Natural Language :: English",
+    "Natural Language :: Spanish",
+    "Natural Language :: French",
+    "Natural Language :: Portuguese",
+    "Natural Language :: Italian",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://facil.guide"
+"English Guides" = "https://facil.guide/en/"
+"Guias en Espanol" = "https://facil.guide/es/"
+"Guides en Francais" = "https://facil.guide/fr/"
+Repository = "https://github.com/arnaudleroy-studio/facilguide-python"
+"Bug Tracker" = "https://github.com/arnaudleroy-studio/facilguide-python/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]

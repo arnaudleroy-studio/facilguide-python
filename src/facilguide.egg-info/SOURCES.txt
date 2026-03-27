@@ -1,0 +1,9 @@
+LICENSE
+README.md
+pyproject.toml
+src/facil/__init__.py
+src/facil/data.py
+src/facilguide.egg-info/PKG-INFO
+src/facilguide.egg-info/SOURCES.txt
+src/facilguide.egg-info/dependency_links.txt
+src/facilguide.egg-info/top_level.txt
