@@ -35,6 +35,7 @@ dependencies = []
 
 [project.urls]
 Homepage = "https://facil.guide"
+Documentation = "https://facilguide.readthedocs.io/"
 "English Guides" = "https://facil.guide/en/"
 "Guias en Espanol" = "https://facil.guide/es/"
 "Guides en Francais" = "https://facil.guide/fr/"
